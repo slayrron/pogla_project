@@ -18,16 +18,37 @@ GLuint program_id;
 GLuint program_id_geo;
 
 float anim_time = 0.0f;
+float nbtess = 2.0;  
 
 void window_resize(int width, int height) {
   //std::cout << "glViewport(0,0,"<< width << "," << height << ");TEST_OPENGL_ERROR();" << std::endl;
   glViewport(0,0,width,height);TEST_OPENGL_ERROR();
 }
 
+void keypress(unsigned char key, int xmouse, int ymouse) {
+  switch (key) {
+    case 'w':
+      glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+      break;
+    case 'f':
+      glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+      break;
+    case 't':
+      nbtess *= 2.0;
+  }
+  
+}
+
 void anim() {
   GLint anim_time_location;
   anim_time_location = glGetUniformLocation(program_id_geo, "anim_time");
   glUniform1f(anim_time_location, anim_time);
+
+  GLint nbtess_location;
+  nbtess_location = glGetUniformLocation(program_id_geo, "nbtess");
+  glUniform1f(nbtess_location, nbtess);
+
+
   anim_time += 0.1;
   glutPostRedisplay();
 }
@@ -47,7 +68,6 @@ void display() {
   
   glUseProgram(program_id);TEST_OPENGL_ERROR();
   glBindVertexArray(plan_vao_id);TEST_OPENGL_ERROR();
-  //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
   glDrawArrays(GL_TRIANGLES, 0, vertex_buffer_data.size());TEST_OPENGL_ERROR();
   
   glUseProgram(program_id_geo);TEST_OPENGL_ERROR();
@@ -68,6 +88,7 @@ void init_glut(int &argc, char *argv[]) {
   glutInitWindowSize(1024, 1024);
   glutInitWindowPosition ( 100, 100 );
   glutCreateWindow("Shader Programming");
+  glutKeyboardUpFunc(keypress);
   glutDisplayFunc(display);
   glutReshapeFunc(window_resize);
 }
@@ -204,6 +225,7 @@ bool init_shaders() {
 }
 
 bool init_shaders_geo() {
+
   std::string vertex_src = load("vertex.shd");
   std::string tessControl_src = load("tessControl.shd");
   std::string tessEval_src = load("tessEval.shd");
@@ -297,7 +319,6 @@ bool init_shaders_geo() {
   }
   return true;
 }
-
 
 int main(int argc, char *argv[]) {
   init_glut(argc, argv);

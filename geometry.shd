@@ -1,9 +1,9 @@
 #version 420
 
-// On reçoit des triangles
+// On reçoit des points
 // On renvoit des triangles
 
-layout ( triangles ) in;
+layout ( points ) in;
 layout ( triangle_strip, max_vertices=3 ) out;
 
 
@@ -22,24 +22,8 @@ float pseudoRandom(vec2 co) {
 
 void main() {
 
-    color = vec3(0.0, 1.0, 0.0);
-	vec4 origin = (gl_in[0].gl_Position + gl_in[1].gl_Position + gl_in[2].gl_Position) / 3.0;
-
-	
-
-    /*gl_Position = origin + vec4(2.0, 0.0, 0.0, 0.0);
-    EmitVertex();
-
-	gl_Position = origin + vec4(-2.0, 0.0, 0.0, 0.0);
-	EmitVertex();
-
-	gl_Position = origin + vec4(0.0, -25.0, 0.0, 1.0);
-	EmitVertex();
-
-    EndPrimitive();
-
 	vec4 origin = gl_in[0].gl_Position;
-	color = vec3(0.0, 1.0, 0.0);*/
+	color = vec3(0.0, 1.0, 0.0);
 
 	const vec4 grass_vertices[3] = vec4[3](
 		origin + vec4(2.0, 0.0, 0.0, 0.0),
