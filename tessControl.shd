@@ -12,8 +12,8 @@ void main() {
         gl_TessLevelOuter[2] = nbtess;
         gl_TessLevelOuter[3] = nbtess;
 
-        gl_TessLevelInner[0] = nbtess / 2.0;
-        gl_TessLevelInner[1] = nbtess / 2.0;
+        gl_TessLevelInner[0] = nbtess;
+        gl_TessLevelInner[1] = nbtess;
     }
     
 

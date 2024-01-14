@@ -14,11 +14,13 @@
 
 
 GLuint plan_vao_id;
+GLuint grass_vao_id;
 GLuint program_id;
 GLuint program_id_geo;
 
 float anim_time = 0.0f;
-float nbtess = 2.0;  
+float nbtess = 2.0;
+bool wind = true;
 
 void window_resize(int width, int height) {
   //std::cout << "glViewport(0,0,"<< width << "," << height << ");TEST_OPENGL_ERROR();" << std::endl;
@@ -35,6 +37,12 @@ void keypress(unsigned char key, int xmouse, int ymouse) {
       break;
     case 't':
       nbtess *= 2.0;
+      break;
+    case 'g':
+      nbtess /= 2.0;
+      break;
+    case 'h':
+      wind = !wind;
   }
   
 }
@@ -48,13 +56,13 @@ void anim() {
   nbtess_location = glGetUniformLocation(program_id_geo, "nbtess");
   glUniform1f(nbtess_location, nbtess);
 
-
   anim_time += 0.1;
   glutPostRedisplay();
 }
 
-void timer(int value) {
-  anim();
+void timer(int) {
+  if (wind)
+    anim();
   glutTimerFunc(33, timer, 0);
 }
 
@@ -71,7 +79,7 @@ void display() {
   glDrawArrays(GL_TRIANGLES, 0, vertex_buffer_data.size());TEST_OPENGL_ERROR();
   
   glUseProgram(program_id_geo);TEST_OPENGL_ERROR();
-  glBindVertexArray(plan_vao_id);TEST_OPENGL_ERROR();
+  glBindVertexArray(grass_vao_id);TEST_OPENGL_ERROR();
   glPatchParameteri(GL_PATCH_VERTICES, 4);
   glDrawArrays(GL_PATCHES, 0, vertex_buffer_data.size());TEST_OPENGL_ERROR();
   
@@ -104,15 +112,14 @@ bool init_glew() {
 void init_GL() {
   glEnable(GL_DEPTH_TEST);TEST_OPENGL_ERROR();
   glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);TEST_OPENGL_ERROR();
-  glEnable(GL_CULL_FACE);TEST_OPENGL_ERROR();
+  //glEnable(GL_CULL_FACE);TEST_OPENGL_ERROR();
   glClearColor(0.4,0.4,0.4,1.0);TEST_OPENGL_ERROR();
 }
 
 
 void init_object_vbo() {
-  
 
-  int max_nb_vbo = 5;
+  int max_nb_vbo = 2;
   int nb_vbo = 0;
   int index_vbo = 0;
   GLuint vbo_ids[max_nb_vbo];
@@ -123,6 +130,36 @@ void init_object_vbo() {
 
   glGenVertexArrays(1, &plan_vao_id);TEST_OPENGL_ERROR();
   glBindVertexArray(plan_vao_id);TEST_OPENGL_ERROR();
+
+  if (vertex_location!=-1) nb_vbo++;
+  if (normal_smooth_location!=-1) nb_vbo++;
+  glGenBuffers(nb_vbo, vbo_ids);TEST_OPENGL_ERROR();
+
+  if (vertex_location!=-1) {
+    glBindBuffer(GL_ARRAY_BUFFER, vbo_ids[index_vbo++]);TEST_OPENGL_ERROR();
+    glBufferData(GL_ARRAY_BUFFER, vertex_buffer_data_triangle.size()*sizeof(float), vertex_buffer_data_triangle.data(), GL_STATIC_DRAW);TEST_OPENGL_ERROR();
+
+  
+    glVertexAttribPointer(vertex_location, 3, GL_FLOAT, GL_FALSE, 0, 0);TEST_OPENGL_ERROR();
+    glEnableVertexAttribArray(vertex_location);TEST_OPENGL_ERROR();
+  }
+  glBindVertexArray(0);
+}
+
+
+void init_object_vbo_geo() {
+
+  int max_nb_vbo = 5;
+  int nb_vbo = 0;
+  int index_vbo = 0;
+  GLuint vbo_ids[max_nb_vbo];
+  GLuint ebo_ids[max_nb_vbo];
+
+  GLint vertex_location = glGetAttribLocation(program_id,"position");TEST_OPENGL_ERROR();
+  GLint normal_smooth_location = glGetAttribLocation(program_id,"normalSmooth");TEST_OPENGL_ERROR();
+
+  glGenVertexArrays(1, &grass_vao_id);TEST_OPENGL_ERROR();
+  glBindVertexArray(grass_vao_id);TEST_OPENGL_ERROR();
 
   if (vertex_location!=-1) nb_vbo++;
   if (normal_smooth_location!=-1) nb_vbo++;
@@ -329,5 +366,6 @@ int main(int argc, char *argv[]) {
   init_shaders();
   init_shaders_geo();
   init_object_vbo();
+  init_object_vbo_geo();
   glutMainLoop();
 }
