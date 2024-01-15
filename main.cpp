@@ -27,7 +27,7 @@ void window_resize(int width, int height) {
   glViewport(0,0,width,height);TEST_OPENGL_ERROR();
 }
 
-void keypress(unsigned char key, int xmouse, int ymouse) {
+void keypress(unsigned char key, int, int) {
   switch (key) {
     case 'w':
       glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -113,7 +113,7 @@ void init_GL() {
   glEnable(GL_DEPTH_TEST);TEST_OPENGL_ERROR();
   glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);TEST_OPENGL_ERROR();
   //glEnable(GL_CULL_FACE);TEST_OPENGL_ERROR();
-  glClearColor(0.4,0.4,0.4,1.0);TEST_OPENGL_ERROR();
+  glClearColor(0.52,0.8,0.92,1.0);TEST_OPENGL_ERROR();
 }
 
 
@@ -123,7 +123,6 @@ void init_object_vbo() {
   int nb_vbo = 0;
   int index_vbo = 0;
   GLuint vbo_ids[max_nb_vbo];
-  GLuint ebo_ids[max_nb_vbo];
 
   GLint vertex_location = glGetAttribLocation(program_id,"position");TEST_OPENGL_ERROR();
   GLint normal_smooth_location = glGetAttribLocation(program_id,"normalSmooth");TEST_OPENGL_ERROR();
@@ -153,7 +152,6 @@ void init_object_vbo_geo() {
   int nb_vbo = 0;
   int index_vbo = 0;
   GLuint vbo_ids[max_nb_vbo];
-  GLuint ebo_ids[max_nb_vbo];
 
   GLint vertex_location = glGetAttribLocation(program_id,"position");TEST_OPENGL_ERROR();
   GLint normal_smooth_location = glGetAttribLocation(program_id,"normalSmooth");TEST_OPENGL_ERROR();

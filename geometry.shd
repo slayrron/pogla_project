@@ -14,7 +14,6 @@ out vec3 color;
 float pseudoRandom(vec2 co) {
     return fract(sin(dot(co.xy, vec2(12.9898, 78.233))) * 43758.5453);
 }
-
 void main() {
 
 	vec4 origin = gl_in[0].gl_Position;
@@ -33,7 +32,7 @@ void main() {
         // Calculate wind effect
 		vec3 windDirection = vec3(-.8f, 0.0f, -0.0);
 		float randomFactor = pseudoRandom(position.xy);
-        vec3 windEffect = sin(anim_time * 0.8 + randomFactor) * 5.0 * windDirection;
+        vec3 windEffect = sin(anim_time * 0.3 + randomFactor) * 5.0 * windDirection;
         //vec3 turbulence = noise(anim_time * turbulenceScale) * turbulenceIntensity;
 
         // Apply wind effect and turbulence to vertex position
