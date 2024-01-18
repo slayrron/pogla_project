@@ -1,7 +1,7 @@
 #version 450
 
-// On reçoit des points
-// On renvoit des triangles
+// We receive points
+// We send triangles_strip
 
 layout ( points ) in;
 layout ( triangle_strip, max_vertices=3 ) out;
@@ -33,7 +33,6 @@ void main() {
 		vec3 windDirection = vec3(-.8f, 0.0f, -0.0);
 		float randomFactor = pseudoRandom(position.xy);
         vec3 windEffect = sin(anim_time * 0.3 + randomFactor) * 5.0 * windDirection;
-        //vec3 turbulence = noise(anim_time * turbulenceScale) * turbulenceIntensity;
 
         // Apply wind effect and turbulence to vertex position
 		if (i==2)
