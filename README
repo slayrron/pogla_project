@@ -1,0 +1,14 @@
+Grass implementation with wind factor in OpenGl
+
+W : Rendering lines only
+F : Rendering full shapes
+T : Increase tesselation level
+G : Decrease tesselation level
+H : Stop wind effect
+
+AUTHORS
+lovely-son.hilme
+theau.degroote
+
+Demo
+https://youtu.be/WbwEHuG8yUU

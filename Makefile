@@ -8,26 +8,16 @@
 
 CC = g++
 
-CPP_FILES =
-CPP_FILES +=
-HXX_FILES = simple_plan.hh
-HXX_FILES +=
-OBJ_FILES = $(CPP_FILES:.cpp=.o)
+HXX_FILES = src/simple_plan.hh
+OBJ_FILES = $(CPP_FILES:.cpp=src/.o)
 
 CXX_FLAGS += -Wall -Wextra -O3 -g -std=c++11
-CXX_FLAGS +=
 CXX_FLAGS += -m64 -march=native
 CXX_FLAGS += -fopt-info-vec-optimized #-fopt-info-vec-missed -ftree-vectorize
-#CXX_FLAGS += -I/home/jonathan/work/enseignement/matieres/synthese/prog/opengl/compute_shader/jf_gl_tools/build_head/src
 LDXX_FLAGS = -lGL  -lGLEW -lglut -lpthread
-#LDXX_FLAGS += /home/jonathan/work/enseignement/matieres/synthese/prog/opengl/compute_shader/jf_gl_tools/dist_lib/libjfglt.a
 
-MAIN_FILE = main.cpp
+MAIN_FILE = src/main.cpp
 DIST = main
-
-SKEL_DIST_DIR = pogl_skel_tp
-SKEL_FILES = $(CPP_FILES) $(HXX_FILES) $(MAIN_FILE) Makefile vertex.shd fragment.shd
-
 
 #For gcc 4.9
 #CXXFLAGS+=-fdiagnostics-color=auto
@@ -86,17 +76,8 @@ build: $(OBJ_FILES)
 	fi ;\
 	exit $$sta
 
-.PHONY: all clean pre-build post-build main-build build skel
+.PHONY: all clean pre-build post-build main-build build
 
 clean:
-	rm -f $(OBJ_FILES)
+	rm -f src/main.o
 	rm -f $(DIST)
-	rm -rf $(SKEL_DIST_DIR).tar.bz2
-
-
-skel:
-	rm -rf $(SKEL_DIST_DIR)
-	mkdir $(SKEL_DIST_DIR)
-	cp $(SKEL_FILES) $(SKEL_DIST_DIR)
-	tar -cjvf $(SKEL_DIST_DIR).tar.bz2 $(SKEL_DIST_DIR)
-	rm -rf $(SKEL_DIST_DIR)
